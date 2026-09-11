@@ -1,0 +1,866 @@
+<!-- HTML5 kullandığımızı belirtiyoruz. -->
+<!DOCTYPE html>
+
+<!-- Sayfanın dilini Türkçe olarak belirtiyoruz. -->
+<html lang="tr">
+
+<!-- Sayfanın görünmeyen ayarlarının bulunduğu bölüm. -->
+<head>
+
+    <!-- Türkçe karakterlerin düzgün görünmesini sağlıyoruz. -->
+    <meta charset="UTF-8">
+
+    <!-- Sayfanın telefon ve tabletlerde ekrana uyum sağlamasını sağlıyoruz. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Tarayıcı sekmesinde görünecek sayfa başlığını belirliyoruz. -->
+    <title>TaskFlow — Modern Task Manager</title>
+
+    <!-- Harici CSS dosyamızı HTML sayfasına bağlıyoruz. -->
+    <link rel="stylesheet" href="style.css">
+
+<!-- Head bölümünü kapatıyoruz. -->
+</head>
+
+
+<!-- Kullanıcının göreceği bütün içerikler body içerisinde bulunur. -->
+<body>
+
+
+    <!-- ==================================================
+         ANİMASYONLU ARKA PLAN
+    ================================================== -->
+
+    <!-- Arka plan animasyonlarının tamamını taşıyan ana kapsayıcı. -->
+    <div class="background-effects">
+
+        <!-- Birinci hareketli ışık küresi. -->
+        <div class="orb orb-1"></div>
+
+        <!-- İkinci hareketli ışık küresi. -->
+        <div class="orb orb-2"></div>
+
+        <!-- Üçüncü hareketli ışık küresi. -->
+        <div class="orb orb-3"></div>
+
+    <!-- Arka plan kapsayıcısını kapatıyoruz. -->
+    </div>
+
+
+    <!-- ==================================================
+         ANA UYGULAMA
+    ================================================== -->
+
+    <!-- Sidebar ve ana içerik alanını birlikte tutan ana kapsayıcı. -->
+    <div class="app">
+
+
+        <!-- ==================================================
+             SIDEBAR
+        ================================================== -->
+
+        <!-- Sol tarafta sabit duran menüyü oluşturuyoruz. -->
+        <aside class="sidebar">
+
+
+            <!-- Logo ve uygulama adının bulunduğu bölüm. -->
+            <div class="logo-area">
+
+                <!-- TaskFlow logosunun bulunduğu kutu. -->
+                <div class="logo-icon">
+
+                    <!-- Logo içerisinde gösterilecek tik işareti. -->
+                    ✓
+
+                <!-- Logo kutusunu kapatıyoruz. -->
+                </div>
+
+
+                <!-- Logo yazılarının bulunduğu bölüm. -->
+                <div>
+
+                    <!-- Uygulamanın adını gösteriyoruz. -->
+                    <h1>TaskFlow</h1>
+
+                    <!-- Uygulamanın kısa açıklamasını gösteriyoruz. -->
+                    <span>Task Management</span>
+
+                <!-- Yazı bölümünü kapatıyoruz. -->
+                </div>
+
+            <!-- Logo alanını kapatıyoruz. -->
+            </div>
+
+
+            <!-- ==================================================
+                 SIDEBAR NAVİGASYONU
+            ================================================== -->
+
+            <!-- Menü seçeneklerinin bulunduğu navigasyon alanı. -->
+            <nav class="sidebar-nav">
+
+
+                <!-- Dashboard sayfasına geçiş yapan buton. -->
+                <button
+                    class="nav-item active"
+                    data-section="dashboard"
+                >
+
+                    <!-- Menü ikonunu gösteriyoruz. -->
+                    <span class="nav-icon">⌂</span>
+
+                    <!-- Menü yazısını gösteriyoruz. -->
+                    <span>Dashboard</span>
+
+                <!-- Dashboard butonunu kapatıyoruz. -->
+                </button>
+
+
+                <!-- Görevler sayfasına geçiş yapan buton. -->
+                <button
+                    class="nav-item"
+                    data-section="tasks"
+                >
+
+                    <!-- Görevler ikonunu gösteriyoruz. -->
+                    <span class="nav-icon">☷</span>
+
+                    <!-- Menü yazısını gösteriyoruz. -->
+                    <span>Görevler</span>
+
+                <!-- Görevler butonunu kapatıyoruz. -->
+                </button>
+
+
+                <!-- Ayarlar sayfasına geçiş yapan buton. -->
+                <button
+                    class="nav-item"
+                    data-section="settings"
+                >
+
+                    <!-- Ayarlar ikonunu gösteriyoruz. -->
+                    <span class="nav-icon">⚙</span>
+
+                    <!-- Menü yazısını gösteriyoruz. -->
+                    <span>Ayarlar</span>
+
+                <!-- Ayarlar butonunu kapatıyoruz. -->
+                </button>
+
+
+            <!-- Navigasyon alanını kapatıyoruz. -->
+            </nav>
+
+
+            <!-- ==================================================
+                 SIDEBAR ALT BÖLÜMÜ
+            ================================================== -->
+
+            <!-- Sidebar'ın en altında bulunan bilgi alanı. -->
+            <div class="sidebar-bottom">
+
+                <!-- Uygulamanın çalışma durumunu gösteren kutu. -->
+                <div class="sidebar-info">
+
+                    <!-- Sistemin aktif olduğunu gösteren yeşil nokta. -->
+                    <span class="status-dot"></span>
+
+
+                    <!-- Durum bilgilerinin bulunduğu bölüm. -->
+                    <div>
+
+                        <!-- Uygulamanın adını gösteriyoruz. -->
+                        <strong>TaskFlow</strong>
+
+                        <!-- Verilerin nerede tutulduğunu gösteriyoruz. -->
+                        <small>Local Storage</small>
+
+                    <!-- Bilgi yazılarını kapatıyoruz. -->
+                    </div>
+
+                <!-- Bilgi kutusunu kapatıyoruz. -->
+                </div>
+
+            <!-- Sidebar alt bölümünü kapatıyoruz. -->
+            </div>
+
+
+        <!-- Sidebar alanını kapatıyoruz. -->
+        </aside>
+
+
+        <!-- ==================================================
+             ANA İÇERİK
+        ================================================== -->
+
+        <!-- Sidebar'ın sağında kalan ana uygulama alanı. -->
+        <main class="main">
+
+
+            <!-- ==================================================
+                 DASHBOARD
+            ================================================== -->
+
+            <!-- Dashboard sayfasının ana bölümünü oluşturuyoruz. -->
+            <section
+                id="dashboardSection"
+                class="page-section active-section"
+            >
+
+
+                <!-- Sayfanın üst kısmındaki başlık ve buton alanı. -->
+                <header class="topbar">
+
+
+                    <!-- Kullanıcıya gösterilecek karşılama yazıları. -->
+                    <div class="welcome">
+
+                        <!-- Küçük üst başlık. -->
+                        <span class="eyebrow">
+                            TASK MANAGEMENT
+                        </span>
+
+
+                        <!-- Ana sayfa başlığı. -->
+                        <h2>
+
+                            <!-- Başlık metni. -->
+                            Görevlerim
+
+                            <!-- Başlığın yanında hareket eden emoji. -->
+                            <span class="wave">👋</span>
+
+                        <!-- Başlığı kapatıyoruz. -->
+                        </h2>
+
+
+                        <!-- Kullanıcıya açıklama gösteriyoruz. -->
+                        <p>
+                            Bugün neler yapacaksın?
+                        </p>
+
+                    <!-- Karşılama alanını kapatıyoruz. -->
+                    </div>
+
+
+                    <!-- Yeni görev oluşturma butonu. -->
+                    <button
+                        class="primary-button magnetic"
+                        id="addTaskButton"
+                    >
+
+                        <!-- Butonun artı ikonunu gösteriyoruz. -->
+                        <span>+</span>
+
+                        <!-- Butonun yazısını gösteriyoruz. -->
+                        Yeni Görev
+
+                    <!-- Butonu kapatıyoruz. -->
+                    </button>
+
+
+                <!-- Üst barı kapatıyoruz. -->
+                </header>
+
+
+                <!-- ==================================================
+                     İSTATİSTİK KARTLARI
+                ================================================== -->
+
+                <!-- İstatistik kartlarını bir arada tutan alan. -->
+                <section class="stats">
+
+
+                    <!-- Toplam görev sayısını gösteren kart. -->
+                    <div class="stat-card tilt-card">
+
+                        <!-- İstatistik ikonunun bulunduğu kutu. -->
+                        <div class="stat-icon purple">
+
+                            <!-- Toplam görev ikonu. -->
+                            ✓
+
+                        <!-- İkon kutusunu kapatıyoruz. -->
+                        </div>
+
+
+                        <!-- İstatistik bilgilerinin bulunduğu bölüm. -->
+                        <div class="stat-content">
+
+                            <!-- İstatistiğin açıklaması. -->
+                            <span>
+                                Toplam Görev
+                            </span>
+
+                            <!-- JavaScript'in toplam görev sayısını yazacağı alan. -->
+                            <strong id="totalTasks">
+                                0
+                            </strong>
+
+                        <!-- İstatistik içeriğini kapatıyoruz. -->
+                        </div>
+
+
+                        <!-- Kartın içerisindeki dekoratif animasyon alanı. -->
+                        <div class="stat-decoration"></div>
+
+                    <!-- İstatistik kartını kapatıyoruz. -->
+                    </div>
+
+
+                    <!-- Tamamlanan görev sayısını gösteren kart. -->
+                    <div class="stat-card tilt-card">
+
+                        <!-- Tamamlanan görev ikonunun bulunduğu kutu. -->
+                        <div class="stat-icon green">
+
+                            <!-- Tamamlandı ikonunu gösteriyoruz. -->
+                            ✓
+
+                        <!-- İkon kutusunu kapatıyoruz. -->
+                        </div>
+
+
+                        <!-- Tamamlanan görev bilgilerinin bulunduğu bölüm. -->
+                        <div class="stat-content">
+
+                            <!-- İstatistiğin açıklaması. -->
+                            <span>
+                                Tamamlanan
+                            </span>
+
+                            <!-- JavaScript'in tamamlanan görev sayısını yazacağı alan. -->
+                            <strong id="completedTasks">
+                                0
+                            </strong>
+
+                        <!-- İstatistik içeriğini kapatıyoruz. -->
+                        </div>
+
+
+                        <!-- Kartın dekoratif animasyon alanı. -->
+                        <div class="stat-decoration"></div>
+
+                    <!-- İstatistik kartını kapatıyoruz. -->
+                    </div>
+
+
+                    <!-- Bekleyen görev sayısını gösteren kart. -->
+                    <div class="stat-card tilt-card">
+
+                        <!-- Bekleyen görev ikonunun bulunduğu kutu. -->
+                        <div class="stat-icon orange">
+
+                            <!-- Saat ikonunu gösteriyoruz. -->
+                            ◷
+
+                        <!-- İkon kutusunu kapatıyoruz. -->
+                        </div>
+
+
+                        <!-- Bekleyen görev bilgilerinin bulunduğu bölüm. -->
+                        <div class="stat-content">
+
+                            <!-- İstatistiğin açıklaması. -->
+                            <span>
+                                Bekleyen
+                            </span>
+
+                            <!-- JavaScript'in bekleyen görev sayısını yazacağı alan. -->
+                            <strong id="pendingTasks">
+                                0
+                            </strong>
+
+                        <!-- İstatistik içeriğini kapatıyoruz. -->
+                        </div>
+
+
+                        <!-- Kartın dekoratif animasyon alanı. -->
+                        <div class="stat-decoration"></div>
+
+                    <!-- İstatistik kartını kapatıyoruz. -->
+                    </div>
+
+
+                <!-- İstatistik alanını kapatıyoruz. -->
+                </section>
+
+
+                <!-- ==================================================
+                     GÖREV PANELİ
+                ================================================== -->
+
+                <!-- Görev listesinin bulunduğu ana panel. -->
+                <section class="tasks-panel">
+
+
+                    <!-- Görev panelinin üst kısmı. -->
+                    <div class="panel-header">
+
+
+                        <!-- Panel başlığının bulunduğu bölüm. -->
+                        <div>
+
+                            <!-- Panel başlığını gösteriyoruz. -->
+                            <h3>
+                                Görevler
+                            </h3>
+
+                            <!-- Panel açıklamasını gösteriyoruz. -->
+                            <p>
+                                Görevlerini yönet ve ilerlemeni takip et.
+                            </p>
+
+                        <!-- Başlık alanını kapatıyoruz. -->
+                        </div>
+
+
+                        <!-- Arama ve filtre araçlarını tutan alan. -->
+                        <div class="task-tools">
+
+
+                            <!-- Görev arama kutusunu oluşturuyoruz. -->
+                            <div class="search-box">
+
+                                <!-- Arama ikonunu gösteriyoruz. -->
+                                <span>⌕</span>
+
+                                <!-- Kullanıcının görev arayacağı input. -->
+                                <input
+                                    type="text"
+                                    id="searchInput"
+                                    placeholder="Görev ara..."
+                                >
+
+                            <!-- Arama kutusunu kapatıyoruz. -->
+                            </div>
+
+
+                            <!-- Görev filtreleme seçeneklerini oluşturuyoruz. -->
+                            <select id="filterSelect">
+
+                                <!-- Tüm görevleri gösteren seçenek. -->
+                                <option value="all">
+                                    Tümü
+                                </option>
+
+                                <!-- Sadece tamamlanmamış görevleri gösteren seçenek. -->
+                                <option value="pending">
+                                    Bekleyen
+                                </option>
+
+                                <!-- Sadece tamamlanmış görevleri gösteren seçenek. -->
+                                <option value="completed">
+                                    Tamamlanan
+                                </option>
+
+                            <!-- Select alanını kapatıyoruz. -->
+                            </select>
+
+
+                        <!-- Araçlar alanını kapatıyoruz. -->
+                        </div>
+
+
+                    <!-- Panel başlığını kapatıyoruz. -->
+                    </div>
+
+
+                    <!-- JavaScript'in görev kartlarını oluşturacağı alan. -->
+                    <div
+                        id="taskList"
+                        class="task-list"
+                    ></div>
+
+
+                <!-- Görev panelini kapatıyoruz. -->
+                </section>
+
+
+            <!-- Dashboard bölümünü kapatıyoruz. -->
+            </section>
+
+
+            <!-- ==================================================
+                 TÜM GÖREVLER SAYFASI
+            ================================================== -->
+
+            <!-- Tüm görevlerin bulunduğu ayrı sayfa bölümü. -->
+            <section
+                id="tasksSection"
+                class="page-section hidden"
+            >
+
+
+                <!-- Görevler sayfasının üst alanı. -->
+                <header class="topbar">
+
+
+                    <!-- Sayfa başlığının bulunduğu bölüm. -->
+                    <div class="welcome">
+
+                        <!-- Küçük sayfa etiketi. -->
+                        <span class="eyebrow">
+                            ALL TASKS
+                        </span>
+
+                        <!-- Sayfa başlığı. -->
+                        <h2>
+                            Tüm Görevler
+                        </h2>
+
+                        <!-- Sayfa açıklaması. -->
+                        <p>
+                            Tüm görevlerini buradan yönetebilirsin.
+                        </p>
+
+                    <!-- Başlık bölümünü kapatıyoruz. -->
+                    </div>
+
+
+                    <!-- Bu sayfadan da yeni görev oluşturabilmek için buton. -->
+                    <button
+                        class="primary-button magnetic"
+                        id="addTaskButtonTasks"
+                    >
+
+                        <!-- Artı ikonunu gösteriyoruz. -->
+                        <span>+</span>
+
+                        <!-- Buton yazısını gösteriyoruz. -->
+                        Yeni Görev
+
+                    <!-- Butonu kapatıyoruz. -->
+                    </button>
+
+
+                <!-- Üst barı kapatıyoruz. -->
+                </header>
+
+
+                <!-- Tüm görevlerin bulunduğu panel. -->
+                <section class="tasks-panel">
+
+                    <!-- JavaScript'in bütün görevleri oluşturacağı alan. -->
+                    <div
+                        id="allTasksList"
+                        class="task-list"
+                    ></div>
+
+                <!-- Görev panelini kapatıyoruz. -->
+                </section>
+
+
+            <!-- Görevler sayfasını kapatıyoruz. -->
+            </section>
+
+
+            <!-- ==================================================
+                 AYARLAR SAYFASI
+            ================================================== -->
+
+            <!-- Ayarlar sayfasının bulunduğu bölüm. -->
+            <section
+                id="settingsSection"
+                class="page-section hidden"
+            >
+
+
+                <!-- Ayarlar sayfasının üst bölümü. -->
+                <header class="topbar">
+
+
+                    <!-- Ayarlar başlığının bulunduğu bölüm. -->
+                    <div class="welcome">
+
+                        <!-- Sayfa kategorisini gösteriyoruz. -->
+                        <span class="eyebrow">
+                            SETTINGS
+                        </span>
+
+                        <!-- Ayarlar sayfasının başlığını gösteriyoruz. -->
+                        <h2>
+                            Ayarlar
+                        </h2>
+
+                        <!-- Sayfa açıklamasını gösteriyoruz. -->
+                        <p>
+                            TaskFlow ayarlarını yönet.
+                        </p>
+
+                    <!-- Başlık bölümünü kapatıyoruz. -->
+                    </div>
+
+
+                <!-- Üst barı kapatıyoruz. -->
+                </header>
+
+
+                <!-- Ayar seçeneklerinin bulunduğu panel. -->
+                <section class="settings-panel">
+
+
+                    <!-- Ayarlar panelinin başlık alanı. -->
+                    <div class="settings-header">
+
+
+                        <!-- Ayarlar ikonunun bulunduğu kutu. -->
+                        <div class="settings-icon">
+                            ⚙
+                        <!-- İkon kutusunu kapatıyoruz. -->
+                        </div>
+
+
+                        <!-- Ayarlar başlık bilgilerinin bulunduğu bölüm. -->
+                        <div>
+
+                            <!-- Panel başlığını gösteriyoruz. -->
+                            <h3>
+                                Uygulama Ayarları
+                            </h3>
+
+                            <!-- Panel açıklamasını gösteriyoruz. -->
+                            <p>
+                                TaskFlow hakkında bilgiler.
+                            </p>
+
+                        <!-- Başlık bölümünü kapatıyoruz. -->
+                        </div>
+
+
+                    <!-- Ayarlar başlığını kapatıyoruz. -->
+                    </div>
+
+
+                    <!-- Uygulama bilgisi satırı. -->
+                    <div class="setting-item">
+
+                        <!-- Ayar bilgisinin bulunduğu bölüm. -->
+                        <div>
+
+                            <!-- Ayarın adını gösteriyoruz. -->
+                            <strong>
+                                Uygulama
+                            </strong>
+
+                            <!-- Ayarın değerini gösteriyoruz. -->
+                            <span>
+                                TaskFlow
+                            </span>
+
+                        <!-- Bilgi bölümünü kapatıyoruz. -->
+                        </div>
+
+                    <!-- Ayar satırını kapatıyoruz. -->
+                    </div>
+
+
+                    <!-- Veri sistemi bilgisini gösteren satır. -->
+                    <div class="setting-item">
+
+                        <!-- Veri sistemi bilgilerinin bulunduğu bölüm. -->
+                        <div>
+
+                            <!-- Ayarın adını gösteriyoruz. -->
+                            <strong>
+                                Veri sistemi
+                            </strong>
+
+                            <!-- Verilerin Local Storage'da tutulduğunu gösteriyoruz. -->
+                            <span>
+                                Browser Local Storage
+                            </span>
+
+                        <!-- Bilgi bölümünü kapatıyoruz. -->
+                        </div>
+
+
+                        <!-- Sistemin aktif olduğunu gösteren etiket. -->
+                        <span class="setting-status">
+                            Aktif
+                        </span>
+
+
+                    <!-- Ayar satırını kapatıyoruz. -->
+                    </div>
+
+
+                    <!-- Kullanılan teknolojileri gösteren satır. -->
+                    <div class="setting-item">
+
+                        <!-- Teknoloji bilgilerinin bulunduğu bölüm. -->
+                        <div>
+
+                            <!-- Ayarın adını gösteriyoruz. -->
+                            <strong>
+                                Teknoloji
+                            </strong>
+
+                            <!-- Kullanılan teknolojileri gösteriyoruz. -->
+                            <span>
+                                HTML + CSS + JavaScript
+                            </span>
+
+                        <!-- Bilgi bölümünü kapatıyoruz. -->
+                        </div>
+
+                    <!-- Ayar satırını kapatıyoruz. -->
+                    </div>
+
+
+                <!-- Ayarlar panelini kapatıyoruz. -->
+                </section>
+
+
+            <!-- Ayarlar sayfasını kapatıyoruz. -->
+            </section>
+
+
+        <!-- Ana içerik alanını kapatıyoruz. -->
+        </main>
+
+
+    <!-- Ana uygulama kapsayıcısını kapatıyoruz. -->
+    </div>
+
+
+    <!-- ==================================================
+         YENİ GÖREV MODALI
+    ================================================== -->
+
+    <!-- Yeni görev ekleme penceresini oluşturuyoruz. -->
+    <div
+        id="taskModal"
+        class="modal"
+    >
+
+
+        <!-- Modalın arka planını oluşturan alan. -->
+        <div class="modal-backdrop"></div>
+
+
+        <!-- Modal içerisindeki asıl içerik kutusu. -->
+        <div class="modal-content">
+
+
+            <!-- Modalı kapatmak için kullanılan buton. -->
+            <button
+                class="modal-close"
+                id="closeModalButton"
+            >
+
+                <!-- Kapatma işareti. -->
+                ×
+
+            <!-- Kapatma butonunu kapatıyoruz. -->
+            </button>
+
+
+            <!-- Modal içerisindeki dekoratif ikon. -->
+            <div class="modal-icon">
+
+                <!-- Yeni görev ikonunu gösteriyoruz. -->
+                +
+
+            <!-- İkon kutusunu kapatıyoruz. -->
+            </div>
+
+
+            <!-- Modalın küçük üst başlığı. -->
+            <span class="eyebrow">
+                NEW TASK
+            </span>
+
+
+            <!-- Modalın ana başlığı. -->
+            <h2>
+                Yeni Görev
+            </h2>
+
+
+            <!-- Kullanıcıya açıklama gösteriyoruz. -->
+            <p>
+                Yapılacak yeni görevi aşağıya ekle.
+            </p>
+
+
+            <!-- Kullanıcının yeni görev adını yazacağı input. -->
+            <input
+                type="text"
+                id="taskInput"
+                placeholder="Örn. JavaScript çalış..."
+                autocomplete="off"
+            >
+
+
+            <!-- Girilen görevi kaydeden buton. -->
+            <button
+                class="primary-button modal-save"
+                id="saveTaskButton"
+            >
+
+                <!-- Buton yazısı. -->
+                Görevi Ekle
+
+            <!-- Kaydetme butonunu kapatıyoruz. -->
+            </button>
+
+
+        <!-- Modal içeriğini kapatıyoruz. -->
+        </div>
+
+
+    <!-- Modalı kapatıyoruz. -->
+    </div>
+
+
+    <!-- ==================================================
+         TOAST BİLDİRİMİ
+    ================================================== -->
+
+    <!-- İşlemlerden sonra ekranda kısa süre görünen bildirim kutusu. -->
+    <div
+        id="toast"
+        class="toast"
+    >
+
+
+        <!-- Bildirim ikonunu gösteriyoruz. -->
+        <span class="toast-icon">
+            ✓
+        </span>
+
+
+        <!-- Bildirim metinlerinin bulunduğu bölüm. -->
+        <div>
+
+            <!-- JavaScript'in bildirim başlığını değiştireceği alan. -->
+            <strong id="toastTitle">
+                Başarılı
+            </strong>
+
+
+            <!-- JavaScript'in bildirim açıklamasını değiştireceği alan. -->
+            <span id="toastMessage">
+                İşlem tamamlandı.
+            </span>
+
+
+        <!-- Bildirim metinlerini kapatıyoruz. -->
+        </div>
+
+
+    <!-- Toast bildirimini kapatıyoruz. -->
+    </div>
+
+
+    <!-- JavaScript dosyamızı HTML sayfasına bağlıyoruz. -->
+    <script src="script.js"></script>
+
+
+<!-- Body bölümünü kapatıyoruz. -->
+</body>
+
+
+<!-- HTML belgesini kapatıyoruz. -->
+</html>

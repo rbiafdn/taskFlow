@@ -1,0 +1,2655 @@
+/* ==================================================
+   TEMEL AYARLAR
+================================================== */
+
+/* Sayfadaki tüm elementlerin varsayılan margin ve padding değerlerini sıfırlıyoruz. */
+* {
+    /* Tarayıcının varsayılan dış boşluğunu kaldırıyoruz. */
+    margin: 0;
+
+    /* Tarayıcının varsayılan iç boşluğunu kaldırıyoruz. */
+    padding: 0;
+
+    /* Width ve height hesabına padding ve border değerlerini dahil ediyoruz. */
+    box-sizing: border-box;
+}
+
+
+/* Uygulama boyunca kullanacağımız renkleri değişken olarak tanımlıyoruz. */
+:root {
+
+    /* Ana sayfa arka plan rengini belirliyoruz. */
+    --bg: #08090d;
+
+    /* Saydam panel arka plan rengini belirliyoruz. */
+    --panel: rgba(18, 20, 28, 0.78);
+
+    /* Katı panel rengini belirliyoruz. */
+    --panel-solid: #12141c;
+
+    /* Genel border rengini belirliyoruz. */
+    --border: rgba(255, 255, 255, 0.08);
+
+    /* Hover sırasında kullanılacak daha belirgin border rengini belirliyoruz. */
+    --border-hover: rgba(255, 255, 255, 0.18);
+
+    /* Ana yazı rengini belirliyoruz. */
+    --text: #f5f7fb;
+
+    /* İkincil ve daha soluk yazı rengini belirliyoruz. */
+    --muted: #8c92a4;
+
+    /* Mor ana tema rengini belirliyoruz. */
+    --purple: #8b5cf6;
+
+    /* Daha açık mor rengini belirliyoruz. */
+    --purple-light: #a78bfa;
+
+    /* Yeşil başarı rengini belirliyoruz. */
+    --green: #22c55e;
+
+    /* Turuncu uyarı rengini belirliyoruz. */
+    --orange: #f59e0b;
+
+    /* Kırmızı silme/hata rengini belirliyoruz. */
+    --red: #ef4444;
+
+    /* Kartlarda kullanacağımız genel gölgeyi belirliyoruz. */
+    --shadow:
+        0 20px 60px rgba(0, 0, 0, 0.35);
+
+    /* Hover animasyonlarının geçiş süresini ve hareket şeklini belirliyoruz. */
+    --transition:
+        0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+/* HTML elementini sayfanın tamamını kaplayacak şekilde ayarlıyoruz. */
+html {
+    /* Sayfa içerisindeki bağlantı ve kaydırma hareketlerini yumuşatıyoruz. */
+    scroll-behavior: smooth;
+}
+
+
+/* Body yani sayfanın ana gövdesini biçimlendiriyoruz. */
+body {
+
+    /* Sayfanın en az ekran yüksekliği kadar olmasını sağlıyoruz. */
+    min-height: 100vh;
+
+    /* Kullanılacak yazı tiplerini belirliyoruz. */
+    font-family:
+        Inter,
+        Arial,
+        sans-serif;
+
+    /* Ana arka plan üzerine mor ve yeşil ışık efektleri ekliyoruz. */
+    background:
+        radial-gradient(
+            circle at 10% 10%,
+            rgba(139, 92, 246, 0.10),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 90% 80%,
+            rgba(34, 197, 94, 0.06),
+            transparent 30%
+        ),
+        var(--bg);
+
+    /* Ana yazı rengini uyguluyoruz. */
+    color: var(--text);
+
+    /* Yatay taşmaları engelliyoruz. */
+    overflow-x: hidden;
+}
+
+
+/* Butonların, inputların ve selectlerin yazı tipini body ile aynı yapıyoruz. */
+button,
+input,
+select {
+    /* Elementlerin kendi varsayılan fontunu kullanmak yerine body fontunu kullanıyoruz. */
+    font: inherit;
+}
+
+
+/* Tüm butonlarda mouse imlecini el işaretine dönüştürüyoruz. */
+button {
+    /* Kullanıcının butona tıklayabileceğini gösteriyoruz. */
+    cursor: pointer;
+}
+
+
+/* ==================================================
+   ANİMASYONLU ARKA PLAN
+================================================== */
+
+/* Arka plandaki tüm dekoratif animasyonları taşıyan kapsayıcı. */
+.background-effects {
+
+    /* Elementi ekranın tamamına yayıyoruz. */
+    position: fixed;
+
+    /* Üst, sağ, alt ve sol tarafı ekranın kenarlarına sıfırlıyoruz. */
+    inset: 0;
+
+    /* İçerideki ışıkların ekran dışına taşmasını engelliyoruz. */
+    overflow: hidden;
+
+    /* Dekoratif elementlerin mouse tıklamalarını engellemesini önlüyoruz. */
+    pointer-events: none;
+
+    /* Arka plan efektlerini diğer elementlerin arkasında tutuyoruz. */
+    z-index: -1;
+}
+
+
+/* Hareket eden ışık kürelerinin ortak özelliklerini belirliyoruz. */
+.orb {
+
+    /* Işık küresinin konumunu bağımsız olarak belirleyebilmesini sağlıyoruz. */
+    position: absolute;
+
+    /* Elementi tam daire haline getiriyoruz. */
+    border-radius: 50%;
+
+    /* Işık küresinin kenarlarını bulanıklaştırıyoruz. */
+    filter: blur(90px);
+
+    /* Işığın fazla güçlü görünmesini engelliyoruz. */
+    opacity: 0.25;
+
+    /* Küreye sürekli hareket eden animasyon uyguluyoruz. */
+    animation:
+        floatOrb 12s ease-in-out infinite;
+}
+
+
+/* Birinci ışık küresinin boyutunu ve başlangıç konumunu belirliyoruz. */
+.orb-1 {
+
+    /* Kürenin genişliğini belirliyoruz. */
+    width: 300px;
+
+    /* Kürenin yüksekliğini belirliyoruz. */
+    height: 300px;
+
+    /* Kürenin rengini belirliyoruz. */
+    background: #7c3aed;
+
+    /* Küreyi ekranın üst kısmına taşıyoruz. */
+    top: -100px;
+
+    /* Küreyi ekranın yaklaşık yüzde 20'sine yerleştiriyoruz. */
+    left: 20%;
+}
+
+
+/* İkinci ışık küresinin özelliklerini belirliyoruz. */
+.orb-2 {
+
+    /* Kürenin genişliğini belirliyoruz. */
+    width: 250px;
+
+    /* Kürenin yüksekliğini belirliyoruz. */
+    height: 250px;
+
+    /* Kürenin rengini belirliyoruz. */
+    background: #2563eb;
+
+    /* Küreyi sağ kenarın dışına biraz taşıyoruz. */
+    right: -80px;
+
+    /* Küreyi ekranın yaklaşık yüzde 35'ine yerleştiriyoruz. */
+    top: 35%;
+
+    /* İkinci kürenin animasyonunu gecikmeli başlatıyoruz. */
+    animation-delay: -4s;
+}
+
+
+/* Üçüncü ışık küresinin özelliklerini belirliyoruz. */
+.orb-3 {
+
+    /* Kürenin genişliğini belirliyoruz. */
+    width: 220px;
+
+    /* Kürenin yüksekliğini belirliyoruz. */
+    height: 220px;
+
+    /* Kürenin rengini belirliyoruz. */
+    background: #059669;
+
+    /* Küreyi ekranın altından dışarı taşıyoruz. */
+    bottom: -100px;
+
+    /* Küreyi yatay olarak konumlandırıyoruz. */
+    left: 35%;
+
+    /* Üçüncü kürenin animasyonunu daha fazla geciktiriyoruz. */
+    animation-delay: -8s;
+}
+
+
+/* Işık kürelerinin hareket animasyonunu oluşturuyoruz. */
+@keyframes floatOrb {
+
+    /* Animasyonun başlangıç ve bitiş durumunu belirliyoruz. */
+    0%,
+    100% {
+
+        /* Küreyi başlangıç pozisyonunda ve normal boyutta tutuyoruz. */
+        transform: translate(0, 0) scale(1);
+    }
+
+
+    /* Animasyonun ortasında uygulanacak hareketi belirliyoruz. */
+    50% {
+
+        /* Küreyi sağa ve yukarı taşıyıp biraz büyütüyoruz. */
+        transform: translate(40px, -30px) scale(1.15);
+    }
+}
+
+
+/* ==================================================
+   ANA UYGULAMA
+================================================== */
+
+/* Sidebar ve ana içeriği bir arada tutan ana kapsayıcı. */
+.app {
+
+    /* İçerikleri yatay olarak yan yana diziyoruz. */
+    display: flex;
+
+    /* Uygulamanın minimum yüksekliğini ekran kadar yapıyoruz. */
+    min-height: 100vh;
+}
+
+
+/* ==================================================
+   SIDEBAR
+================================================== */
+
+/* Sol taraftaki menünün görünümünü oluşturuyoruz. */
+.sidebar {
+
+    /* Sidebar'ın genişliğini belirliyoruz. */
+    width: 250px;
+
+    /* Sidebar'ın en az ekran yüksekliği kadar olmasını sağlıyoruz. */
+    min-height: 100vh;
+
+    /* Sidebar'ın ekrana sabitlenmesini sağlıyoruz. */
+    position: fixed;
+
+    /* Sidebar'ın sol konumunu sıfırlıyoruz. */
+    left: 0;
+
+    /* Sidebar'ın üst konumunu sıfırlıyoruz. */
+    top: 0;
+
+    /* İçerikleri dikey olarak sıralıyoruz. */
+    display: flex;
+
+    /* Flex elementlerini dikey yönde sıralıyoruz. */
+    flex-direction: column;
+
+    /* Sidebar'ın iç boşluğunu belirliyoruz. */
+    padding: 28px 18px;
+
+    /* Saydam ve koyu arka plan oluşturuyoruz. */
+    background:
+        rgba(10, 11, 16, 0.78);
+
+    /* Sidebar'ın arkasındaki içerikleri bulanık gösteriyoruz. */
+    backdrop-filter: blur(24px);
+
+    /* Sidebar'ın sağ tarafına ince çizgi ekliyoruz. */
+    border-right:
+        1px solid var(--border);
+
+    /* Sidebar'ı içeriklerin üzerinde tutuyoruz. */
+    z-index: 20;
+}
+
+
+/* ==================================================
+   LOGO
+================================================== */
+
+/* Logo ve uygulama adının bulunduğu alanı biçimlendiriyoruz. */
+.logo-area {
+
+    /* Elementleri yatay olarak hizalıyoruz. */
+    display: flex;
+
+    /* Elementleri dikey olarak ortalıyoruz. */
+    align-items: center;
+
+    /* Logo ile yazı arasında boşluk bırakıyoruz. */
+    gap: 12px;
+
+    /* Logo alanının iç boşluğunu belirliyoruz. */
+    padding: 5px 8px 35px;
+}
+
+
+/* Logo ikonunun görünümünü oluşturuyoruz. */
+.logo-icon {
+
+    /* Logo kutusunun genişliğini belirliyoruz. */
+    width: 42px;
+
+    /* Logo kutusunun yüksekliğini belirliyoruz. */
+    height: 42px;
+
+    /* İçerikleri yatay olarak ortalıyoruz. */
+    display: flex;
+
+    /* İçerikleri dikey olarak ortalıyoruz. */
+    align-items: center;
+
+    /* İçeriği yatay merkezliyoruz. */
+    justify-content: center;
+
+    /* Köşeleri yuvarlatıyoruz. */
+    border-radius: 13px;
+
+    /* Logoya mor geçişli arka plan veriyoruz. */
+    background:
+        linear-gradient(
+            135deg,
+            #8b5cf6,
+            #6366f1
+        );
+
+    /* Logonun etrafına mor bir gölge ekliyoruz. */
+    box-shadow:
+        0 8px 30px rgba(139, 92, 246, 0.35);
+
+    /* Logo ikonunun yazı boyutunu belirliyoruz. */
+    font-size: 21px;
+
+    /* Logo ikonunu kalınlaştırıyoruz. */
+    font-weight: bold;
+
+    /* Hover animasyonunun yumuşak olmasını sağlıyoruz. */
+    transition: var(--transition);
+}
+
+
+/* Kullanıcı logo alanının üzerine geldiğinde logoyu hareket ettiriyoruz. */
+.logo-area:hover .logo-icon {
+
+    /* Logoyu hafifçe döndürüp büyütüyoruz. */
+    transform:
+        rotate(-8deg)
+        scale(1.08);
+}
+
+
+/* Logo başlığının görünümünü belirliyoruz. */
+.logo-area h1 {
+
+    /* Başlığın yazı boyutunu belirliyoruz. */
+    font-size: 19px;
+
+    /* Harfler arasındaki boşluğu hafif azaltıyoruz. */
+    letter-spacing: -0.5px;
+}
+
+
+/* Logo altındaki küçük yazının görünümünü belirliyoruz. */
+.logo-area span {
+
+    /* Elementi blok haline getiriyoruz. */
+    display: block;
+
+    /* Başlık ile alt yazı arasında boşluk oluşturuyoruz. */
+    margin-top: 3px;
+
+    /* Alt yazıyı daha soluk gösteriyoruz. */
+    color: var(--muted);
+
+    /* Yazı boyutunu küçültüyoruz. */
+    font-size: 10px;
+
+    /* Harfler arasında boşluk bırakıyoruz. */
+    letter-spacing: 0.8px;
+
+    /* Yazıyı büyük harfe çeviriyoruz. */
+    text-transform: uppercase;
+}
+
+
+/* ==================================================
+   SIDEBAR NAVİGASYONU
+================================================== */
+
+/* Menü butonlarını dikey olarak sıralıyoruz. */
+.sidebar-nav {
+
+    /* Flex düzenini aktif ediyoruz. */
+    display: flex;
+
+    /* Menüleri dikey olarak sıralıyoruz. */
+    flex-direction: column;
+
+    /* Menü butonları arasında boşluk bırakıyoruz. */
+    gap: 7px;
+}
+
+
+/* Menü butonlarının ortak görünümünü oluşturuyoruz. */
+.nav-item {
+
+    /* Butonun sidebar genişliğini doldurmasını sağlıyoruz. */
+    width: 100%;
+
+    /* Buton içeriğini yatay olarak düzenliyoruz. */
+    display: flex;
+
+    /* İçeriği dikey olarak ortalıyoruz. */
+    align-items: center;
+
+    /* İkon ve yazı arasında boşluk bırakıyoruz. */
+    gap: 12px;
+
+    /* Butonun iç boşluğunu belirliyoruz. */
+    padding: 13px 14px;
+
+    /* Başlangıçta görünmeyen border kullanıyoruz. */
+    border: 1px solid transparent;
+
+    /* Buton köşelerini yuvarlatıyoruz. */
+    border-radius: 12px;
+
+    /* Butonun arka planını başlangıçta şeffaf yapıyoruz. */
+    background: transparent;
+
+    /* Buton yazısını soluk renkte gösteriyoruz. */
+    color: var(--muted);
+
+    /* Yazıyı sola hizalıyoruz. */
+    text-align: left;
+
+    /* Hover hareketlerini yumuşatıyoruz. */
+    transition: var(--transition);
+}
+
+
+/* Kullanıcı menü butonunun üzerine geldiğinde uygulanacak görünüm. */
+.nav-item:hover {
+
+    /* Yazıyı daha parlak hale getiriyoruz. */
+    color: var(--text);
+
+    /* Hafif arka plan oluşturuyoruz. */
+    background:
+        rgba(255, 255, 255, 0.05);
+
+    /* Border rengini görünür hale getiriyoruz. */
+    border-color:
+        var(--border);
+
+    /* Butonu hafifçe sağa kaydırıyoruz. */
+    transform: translateX(5px);
+}
+
+
+/* Aktif olan menü butonunun görünümünü belirliyoruz. */
+.nav-item.active {
+
+    /* Aktif menünün yazısını beyaz yapıyoruz. */
+    color: white;
+
+    /* Aktif menüye mor saydam arka plan veriyoruz. */
+    background:
+        linear-gradient(
+            90deg,
+            rgba(139, 92, 246, 0.20),
+            rgba(139, 92, 246, 0.06)
+        );
+
+    /* Aktif menü için mor border kullanıyoruz. */
+    border-color:
+        rgba(139, 92, 246, 0.25);
+
+    /* Sol tarafta aktiflik göstergesi oluşturuyoruz. */
+    box-shadow:
+        inset 3px 0 0 var(--purple);
+}
+
+
+/* Menü ikonlarının genişliğini sabitliyoruz. */
+.nav-icon {
+
+    /* İkon alanının genişliğini belirliyoruz. */
+    width: 24px;
+
+    /* İkonun yazı boyutunu belirliyoruz. */
+    font-size: 18px;
+
+    /* İkonu kendi alanının ortasına hizalıyoruz. */
+    text-align: center;
+
+    /* İkon hareketlerini yumuşatıyoruz. */
+    transition: var(--transition);
+}
+
+
+/* Kullanıcı menünün üzerine geldiğinde ikonu büyütüyoruz. */
+.nav-item:hover .nav-icon {
+
+    /* İkonu hafifçe büyütüyoruz. */
+    transform: scale(1.15);
+}
+
+
+/* ==================================================
+   SIDEBAR ALT BÖLÜMÜ
+================================================== */
+
+/* Sidebar altındaki bilgi alanını aşağı itiyoruz. */
+.sidebar-bottom {
+
+    /* Margin-top: auto alanı elementi mümkün olduğunca aşağı iter. */
+    margin-top: auto;
+}
+
+
+/* Local Storage durum kutusunun görünümünü oluşturuyoruz. */
+.sidebar-info {
+
+    /* İçerikleri yatay olarak sıralıyoruz. */
+    display: flex;
+
+    /* İçerikleri dikey olarak ortalıyoruz. */
+    align-items: center;
+
+    /* Nokta ile yazı arasında boşluk bırakıyoruz. */
+    gap: 10px;
+
+    /* Kutunun iç boşluğunu belirliyoruz. */
+    padding: 14px;
+
+    /* Kutunun border rengini belirliyoruz. */
+    border:
+        1px solid var(--border);
+
+    /* Köşeleri yuvarlatıyoruz. */
+    border-radius: 14px;
+
+    /* Kutunun arka planını hafif saydam yapıyoruz. */
+    background:
+        rgba(255, 255, 255, 0.025);
+}
+
+
+/* Sidebar bilgi başlığını blok olarak gösteriyoruz. */
+.sidebar-info strong {
+
+    /* Başlığı ayrı satıra alıyoruz. */
+    display: block;
+
+    /* Başlığın yazı boyutunu küçültüyoruz. */
+    font-size: 12px;
+}
+
+
+/* Sidebar alt açıklamasının görünümünü belirliyoruz. */
+.sidebar-info small {
+
+    /* Açıklamayı soluk renkte gösteriyoruz. */
+    color: var(--muted);
+
+    /* Yazı boyutunu küçültüyoruz. */
+    font-size: 10px;
+}
+
+
+/* Sistemin aktif olduğunu gösteren küçük noktayı oluşturuyoruz. */
+.status-dot {
+
+    /* Noktanın genişliğini belirliyoruz. */
+    width: 8px;
+
+    /* Noktanın yüksekliğini belirliyoruz. */
+    height: 8px;
+
+    /* Noktayı daire haline getiriyoruz. */
+    border-radius: 50%;
+
+    /* Noktanın rengini yeşil yapıyoruz. */
+    background: var(--green);
+
+    /* Noktanın çevresine yeşil ışık ekliyoruz. */
+    box-shadow:
+        0 0 12px var(--green);
+
+    /* Noktaya sürekli nabız animasyonu uyguluyoruz. */
+    animation: pulse 2s infinite;
+}
+
+
+/* Aktiflik noktasının animasyonunu oluşturuyoruz. */
+@keyframes pulse {
+
+    /* Animasyonun başlangıç ve bitiş durumunu belirliyoruz. */
+    0%,
+    100% {
+
+        /* Noktanın görünürlüğünü tam yapıyoruz. */
+        opacity: 1;
+
+        /* Noktanın normal boyutunu koruyoruz. */
+        transform: scale(1);
+    }
+
+
+    /* Animasyonun ortasında noktayı küçültüyoruz. */
+    50% {
+
+        /* Noktayı biraz saydamlaştırıyoruz. */
+        opacity: 0.5;
+
+        /* Noktayı küçültüyoruz. */
+        transform: scale(0.8);
+    }
+}
+
+
+/* ==================================================
+   ANA İÇERİK
+================================================== */
+
+/* Sidebar'ın sağında bulunan ana içeriği biçimlendiriyoruz. */
+.main {
+
+    /* Ana alanın genişliğini sidebar çıkarıldıktan sonraki alan yapıyoruz. */
+    width: calc(100% - 250px);
+
+    /* Sabit sidebar kadar soldan boşluk bırakıyoruz. */
+    margin-left: 250px;
+
+    /* Ana içeriğin iç boşluğunu belirliyoruz. */
+    padding: 45px;
+
+    /* Ana alanın en az ekran yüksekliği kadar olmasını sağlıyoruz. */
+    min-height: 100vh;
+}
+
+
+/* ==================================================
+   SAYFA GEÇİŞ ANİMASYONU
+================================================== */
+
+/* Her sayfa bölümüne giriş animasyonu uyguluyoruz. */
+.page-section {
+
+    /* Sayfa açılırken yukarıdan aşağı doğru gelmesini sağlıyoruz. */
+    animation:
+        pageEnter 0.55s ease both;
+}
+
+
+/* Gizlenen sayfaları tamamen görünmez hale getiriyoruz. */
+.hidden {
+
+    /* Elementi ekrandan kaldırıyoruz. */
+    display: none;
+}
+
+
+/* Sayfa giriş animasyonunu tanımlıyoruz. */
+@keyframes pageEnter {
+
+    /* Animasyonun başlangıcında sayfayı görünmez yapıyoruz. */
+    from {
+
+        /* Elementin şeffaf olmasını sağlıyoruz. */
+        opacity: 0;
+
+        /* Elementi aşağıda başlatıyoruz. */
+        transform: translateY(15px);
+    }
+
+
+    /* Animasyonun sonunda normal konuma getiriyoruz. */
+    to {
+
+        /* Elementi tamamen görünür yapıyoruz. */
+        opacity: 1;
+
+        /* Elementi normal konumuna getiriyoruz. */
+        transform: translateY(0);
+    }
+}
+
+
+/* ==================================================
+   ÜST BAR
+================================================== */
+
+/* Sayfanın üst başlık bölümünü biçimlendiriyoruz. */
+.topbar {
+
+    /* İçerikleri yatay olarak diziyoruz. */
+    display: flex;
+
+    /* İlk ve son elementi iki yana dağıtıyoruz. */
+    justify-content: space-between;
+
+    /* Elementleri dikey olarak ortalıyoruz. */
+    align-items: center;
+
+    /* Alt tarafa boşluk bırakıyoruz. */
+    margin-bottom: 35px;
+}
+
+
+/* Küçük üst başlıkların ortak görünümünü belirliyoruz. */
+.eyebrow {
+
+    /* Elementi satır içerisinde blok gibi davranacak hale getiriyoruz. */
+    display: inline-block;
+
+    /* Altındaki başlıkla arasına boşluk bırakıyoruz. */
+    margin-bottom: 9px;
+
+    /* Mor renkte gösteriyoruz. */
+    color: var(--purple-light);
+
+    /* Yazıyı küçültüyoruz. */
+    font-size: 10px;
+
+    /* Yazıyı kalınlaştırıyoruz. */
+    font-weight: 700;
+
+    /* Harfler arasındaki mesafeyi artırıyoruz. */
+    letter-spacing: 2px;
+}
+
+
+/* Ana sayfa başlığının görünümünü belirliyoruz. */
+.welcome h2 {
+
+    /* Başlığın yazı boyutunu belirliyoruz. */
+    font-size: 34px;
+
+    /* Harfleri hafif birbirine yaklaştırıyoruz. */
+    letter-spacing: -1.5px;
+}
+
+
+/* Başlık altındaki açıklamanın görünümünü belirliyoruz. */
+.welcome p {
+
+    /* Açıklama ile başlık arasında boşluk bırakıyoruz. */
+    margin-top: 7px;
+
+    /* Açıklamayı soluk renkte gösteriyoruz. */
+    color: var(--muted);
+
+    /* Yazı boyutunu küçültüyoruz. */
+    font-size: 14px;
+}
+
+
+/* Selamlama emojisinin hareketini belirliyoruz. */
+.wave {
+
+    /* Transform özelliğinin çalışması için inline-block kullanıyoruz. */
+    display: inline-block;
+
+    /* El sallama animasyonunu sürekli çalıştırıyoruz. */
+    animation:
+        wave 2s ease-in-out infinite;
+}
+
+
+/* El sallama animasyonunu tanımlıyoruz. */
+@keyframes wave {
+
+    /* Başlangıç ve bitişte düz durmasını sağlıyoruz. */
+    0%,
+    100% {
+
+        /* Dönüş açısını sıfırlıyoruz. */
+        transform: rotate(0);
+    }
+
+
+    /* Animasyonun ortasında hafifçe döndürüyoruz. */
+    50% {
+
+        /* Emojiyi sağa doğru döndürüyoruz. */
+        transform: rotate(15deg);
+    }
+}
+
+
+/* ==================================================
+   ANA BUTON
+================================================== */
+
+/* Ana butonun temel görünümünü oluşturuyoruz. */
+.primary-button {
+
+    /* İçerideki dekoratif elementlerin taşmasını kontrol ediyoruz. */
+    position: relative;
+
+    /* Buton içeriğini yatay olarak hizalıyoruz. */
+    display: inline-flex;
+
+    /* İçeriği dikey olarak ortalıyoruz. */
+    align-items: center;
+
+    /* İçeriği yatay olarak ortalıyoruz. */
+    justify-content: center;
+
+    /* İkon ve yazı arasında boşluk bırakıyoruz. */
+    gap: 8px;
+
+    /* Butonun iç boşluğunu belirliyoruz. */
+    padding: 13px 19px;
+
+    /* Butona hafif mor border ekliyoruz. */
+    border: 1px solid
+        rgba(167, 139, 250, 0.25);
+
+    /* Buton köşelerini yuvarlatıyoruz. */
+    border-radius: 12px;
+
+    /* Butona mor-mavi geçişli arka plan veriyoruz. */
+    background:
+        linear-gradient(
+            135deg,
+            #8b5cf6,
+            #6366f1
+        );
+
+    /* Buton yazısını beyaz yapıyoruz. */
+    color: white;
+
+    /* Buton yazısını kalınlaştırıyoruz. */
+    font-weight: 600;
+
+    /* İçerideki ışık efektinin buton dışına çıkmasını engelliyoruz. */
+    overflow: hidden;
+
+    /* Butona mor gölge veriyoruz. */
+    box-shadow:
+        0 10px 30px
+        rgba(99, 102, 241, 0.25);
+
+    /* Hover animasyonlarının yumuşak olmasını sağlıyoruz. */
+    transition: var(--transition);
+}
+
+
+/* Butonun üzerinden geçen ışık efektini oluşturuyoruz. */
+.primary-button::before {
+
+    /* Pseudo-element için boş içerik oluşturuyoruz. */
+    content: "";
+
+    /* Işık efektini butona göre konumlandırıyoruz. */
+    position: absolute;
+
+    /* Işık efektinin üst konumunu belirliyoruz. */
+    top: 0;
+
+    /* Işık efektini butonun sol dışından başlatıyoruz. */
+    left: -100%;
+
+    /* Işık efektinin genişliğini belirliyoruz. */
+    width: 70%;
+
+    /* Işık efektinin butonun tamamını kaplamasını sağlıyoruz. */
+    height: 100%;
+
+    /* Beyaz ve saydam geçişli ışık oluşturuyoruz. */
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,0.25),
+            transparent
+        );
+
+    /* Işık şeridini çapraz hale getiriyoruz. */
+    transform: skewX(-20deg);
+
+    /* Işık hareketini yumuşatıyoruz. */
+    transition: 0.6s;
+}
+
+
+/* Mouse butonun üzerine geldiğinde ışığı butonun üzerinden geçiriyoruz. */
+.primary-button:hover::before {
+
+    /* Işık efektini sağ tarafa taşıyoruz. */
+    left: 130%;
+}
+
+
+/* Buton hover olduğunda hafifçe büyütüp yukarı kaldırıyoruz. */
+.primary-button:hover {
+
+    /* Butonu yukarı ve biraz büyütüyoruz. */
+    transform:
+        translateY(-3px)
+        scale(1.02);
+
+    /* Hover sırasında daha güçlü gölge oluşturuyoruz. */
+    box-shadow:
+        0 15px 40px
+        rgba(99, 102, 241, 0.38);
+}
+
+
+/* Butona basıldığında kısa süreli küçülme efekti veriyoruz. */
+.primary-button:active {
+
+    /* Butonu hafifçe küçültüyoruz. */
+    transform: scale(0.96);
+}
+
+
+/* ==================================================
+   İSTATİSTİKLER
+================================================== */
+
+/* İstatistik kartlarını grid sistemiyle diziyoruz. */
+.stats {
+
+    /* Grid sistemini aktif ediyoruz. */
+    display: grid;
+
+    /* Üç eşit sütun oluşturuyoruz. */
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    /* Kartlar arasında boşluk bırakıyoruz. */
+    gap: 18px;
+
+    /* Kart grubunun altına boşluk bırakıyoruz. */
+    margin-bottom: 25px;
+}
+
+
+/* İstatistik kartlarının ortak görünümünü oluşturuyoruz. */
+.stat-card {
+
+    /* Dekoratif elementleri karta göre konumlandırıyoruz. */
+    position: relative;
+
+    /* İçeriği yatay olarak diziyoruz. */
+    display: flex;
+
+    /* İçeriği dikey olarak ortalıyoruz. */
+    align-items: center;
+
+    /* İkon ile yazı arasında boşluk bırakıyoruz. */
+    gap: 15px;
+
+    /* Kartın minimum yüksekliğini belirliyoruz. */
+    min-height: 120px;
+
+    /* Kartın iç boşluğunu belirliyoruz. */
+    padding: 22px;
+
+    /* Kartın border rengini belirliyoruz. */
+    border:
+        1px solid var(--border);
+
+    /* Kartın köşelerini yuvarlatıyoruz. */
+    border-radius: 18px;
+
+    /* Cam efekti için saydam geçişli arka plan oluşturuyoruz. */
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,0.055),
+            rgba(255,255,255,0.015)
+        );
+
+    /* Arka plandaki elementleri bulanıklaştırıyoruz. */
+    backdrop-filter: blur(18px);
+
+    /* Kart dışına taşan dekorasyonları gizliyoruz. */
+    overflow: hidden;
+
+    /* Hover hareketlerini yumuşatıyoruz. */
+    transition: var(--transition);
+}
+
+
+/* Kullanıcı kartın üzerine geldiğinde kartı yukarı kaldırıyoruz. */
+.stat-card:hover {
+
+    /* Border rengini daha görünür yapıyoruz. */
+    border-color: var(--border-hover);
+
+    /* Kartın gölgesini güçlendiriyoruz. */
+    box-shadow: var(--shadow);
+
+    /* Kartı yukarı doğru hareket ettiriyoruz. */
+    transform:
+        translateY(-7px);
+}
+
+
+/* İstatistik ikonlarının ortak görünümünü belirliyoruz. */
+.stat-icon {
+
+    /* İkon kutusunun genişliğini belirliyoruz. */
+    width: 48px;
+
+    /* İkon kutusunun yüksekliğini belirliyoruz. */
+    height: 48px;
+
+    /* İçeriği yatay olarak ortalıyoruz. */
+    display: flex;
+
+    /* İçeriği dikey olarak ortalıyoruz. */
+    align-items: center;
+
+    /* İçeriği yatay olarak ortalıyoruz. */
+    justify-content: center;
+
+    /* İkon kutusunun köşelerini yuvarlatıyoruz. */
+    border-radius: 14px;
+
+    /* İkon yazı boyutunu belirliyoruz. */
+    font-size: 20px;
+
+    /* Hover animasyonunu yumuşatıyoruz. */
+    transition: var(--transition);
+}
+
+
+/* Kart hover olduğunda ikonun hareket etmesini sağlıyoruz. */
+.stat-card:hover .stat-icon {
+
+    /* İkonu hafifçe döndürüp büyütüyoruz. */
+    transform:
+        rotate(-8deg)
+        scale(1.12);
+}
+
+
+/* Mor ikonun arka plan ve yazı rengini belirliyoruz. */
+.stat-icon.purple {
+
+    /* Mor saydam arka plan oluşturuyoruz. */
+    background:
+        rgba(139, 92, 246, 0.15);
+
+    /* İkonu açık mor yapıyoruz. */
+    color: var(--purple-light);
+}
+
+
+/* Yeşil ikonun görünümünü belirliyoruz. */
+.stat-icon.green {
+
+    /* Yeşil saydam arka plan oluşturuyoruz. */
+    background:
+        rgba(34, 197, 94, 0.12);
+
+    /* İkon rengini yeşil yapıyoruz. */
+    color: var(--green);
+}
+
+
+/* Turuncu ikonun görünümünü belirliyoruz. */
+.stat-icon.orange {
+
+    /* Turuncu saydam arka plan oluşturuyoruz. */
+    background:
+        rgba(245, 158, 11, 0.12);
+
+    /* İkon rengini turuncu yapıyoruz. */
+    color: var(--orange);
+}
+
+
+/* İstatistik açıklamasının görünümünü belirliyoruz. */
+.stat-content span {
+
+    /* Elementi ayrı satıra alıyoruz. */
+    display: block;
+
+    /* Açıklama ile sayı arasında boşluk bırakıyoruz. */
+    margin-bottom: 5px;
+
+    /* Açıklamayı soluk renkte gösteriyoruz. */
+    color: var(--muted);
+
+    /* Yazı boyutunu küçültüyoruz. */
+    font-size: 12px;
+}
+
+
+/* İstatistik sayısının görünümünü belirliyoruz. */
+.stat-content strong {
+
+    /* Sayıyı büyük gösteriyoruz. */
+    font-size: 30px;
+
+    /* Harf/sayı aralığını biraz azaltıyoruz. */
+    letter-spacing: -1px;
+}
+
+
+/* Kart içerisindeki dekoratif daireyi oluşturuyoruz. */
+.stat-decoration {
+
+    /* Daireyi karta göre konumlandırıyoruz. */
+    position: absolute;
+
+    /* Dairenin genişliğini belirliyoruz. */
+    width: 100px;
+
+    /* Dairenin yüksekliğini belirliyoruz. */
+    height: 100px;
+
+    /* Daireyi tam yuvarlak yapıyoruz. */
+    right: -35px;
+
+    /* Daireyi kartın altına taşıyoruz. */
+    bottom: -45px;
+
+    /* Daireyi yuvarlak hale getiriyoruz. */
+    border-radius: 50%;
+
+    /* Daireye mor saydam ışık veriyoruz. */
+    background:
+        rgba(139, 92, 246, 0.08);
+
+    /* Dairenin büyüme animasyonunu yumuşatıyoruz. */
+    transition: var(--transition);
+}
+
+
+/* Kartın üzerine gelindiğinde dekoratif daireyi büyütüyoruz. */
+.stat-card:hover .stat-decoration {
+
+    /* Daireyi 1.6 kat büyütüyoruz. */
+    transform: scale(1.6);
+}
+
+
+/* ==================================================
+   GÖREV PANELİ
+================================================== */
+
+/* Görev panelinin ana görünümünü oluşturuyoruz. */
+.tasks-panel {
+
+    /* Panelin border rengini belirliyoruz. */
+    border:
+        1px solid var(--border);
+
+    /* Panel köşelerini yuvarlatıyoruz. */
+    border-radius: 20px;
+
+    /* Panel için saydam koyu arka plan oluşturuyoruz. */
+    background:
+        rgba(15, 17, 24, 0.72);
+
+    /* Arkadaki içerikleri bulanık gösteriyoruz. */
+    backdrop-filter: blur(20px);
+
+    /* Panel içerisindeki taşmaları gizliyoruz. */
+    overflow: hidden;
+
+    /* Panele yumuşak gölge veriyoruz. */
+    box-shadow:
+        0 15px 50px
+        rgba(0, 0, 0, 0.15);
+}
+
+
+/* Görev panelinin üst bölümünü biçimlendiriyoruz. */
+.panel-header {
+
+    /* İçeriği yatay olarak diziyoruz. */
+    display: flex;
+
+    /* Başlık ve araçları iki yana dağıtıyoruz. */
+    justify-content: space-between;
+
+    /* Elementleri dikey olarak ortalıyoruz. */
+    align-items: center;
+
+    /* Çok dar ekranlarda elementler arasındaki boşluğu koruyoruz. */
+    gap: 20px;
+
+    /* Panel başlığının iç boşluğunu belirliyoruz. */
+    padding: 24px;
+
+    /* Başlık ile görev listesi arasına çizgi koyuyoruz. */
+    border-bottom:
+        1px solid var(--border);
+}
+
+
+/* Görev paneli başlığının görünümünü belirliyoruz. */
+.panel-header h3 {
+
+    /* Başlığın yazı boyutunu belirliyoruz. */
+    font-size: 18px;
+}
+
+
+/* Görev paneli açıklamasının görünümünü belirliyoruz. */
+.panel-header p {
+
+    /* Açıklamayı başlıktan biraz aşağıya taşıyoruz. */
+    margin-top: 5px;
+
+    /* Açıklamayı soluk gösteriyoruz. */
+    color: var(--muted);
+
+    /* Yazı boyutunu küçültüyoruz. */
+    font-size: 12px;
+}
+
+
+/* Arama ve filtre araçlarının bulunduğu alanı biçimlendiriyoruz. */
+.task-tools {
+
+    /* Araçları yatay olarak diziyoruz. */
+    display: flex;
+
+    /* Araçlar arasında boşluk bırakıyoruz. */
+    gap: 9px;
+}
+
+
+/* ==================================================
+   ARAMA KUTUSU
+================================================== */
+
+/* Arama kutusunu konumlandırılabilir hale getiriyoruz. */
+.search-box {
+
+    /* İçerisindeki ikonun inputa göre konumlanmasını sağlıyoruz. */
+    position: relative;
+}
+
+
+/* Arama ikonunu inputun içerisine yerleştiriyoruz. */
+.search-box span {
+
+    /* İkonu arama kutusuna göre konumlandırıyoruz. */
+    position: absolute;
+
+    /* İkonu soldan 13px uzaklaştırıyoruz. */
+    left: 13px;
+
+    /* İkonu dikey olarak ortalıyoruz. */
+    top: 50%;
+
+    /* Dikey konumunu tam ortalıyoruz. */
+    transform: translateY(-50%);
+
+    /* İkonu soluk renkte gösteriyoruz. */
+    color: var(--muted);
+
+    /* İkonun boyutunu belirliyoruz. */
+    font-size: 20px;
+}
+
+
+/* Arama inputu ve filtre selectinin ortak görünümünü belirliyoruz. */
+.search-box input,
+.task-tools select {
+
+    /* Elementlerin yüksekliğini sabitliyoruz. */
+    height: 40px;
+
+    /* İnce border oluşturuyoruz. */
+    border:
+        1px solid var(--border);
+
+    /* Köşeleri yuvarlatıyoruz. */
+    border-radius: 10px;
+
+    /* Focus sırasında oluşan varsayılan outline'ı kaldırıyoruz. */
+    outline: none;
+
+    /* Hafif saydam arka plan veriyoruz. */
+    background:
+        rgba(255,255,255,0.035);
+
+    /* Yazıyı beyaz yapıyoruz. */
+    color: var(--text);
+
+    /* Focus animasyonunu yumuşatıyoruz. */
+    transition: var(--transition);
+}
+
+
+/* Arama inputunun genişliğini belirliyoruz. */
+.search-box input {
+
+    /* Inputu 220px genişliğinde yapıyoruz. */
+    width: 220px;
+
+    /* İkon için soldan ekstra boşluk bırakıyoruz. */
+    padding: 0 12px 0 38px;
+}
+
+
+/* Select elementinin iç boşluğunu belirliyoruz. */
+.task-tools select {
+
+    /* Sağ ve soldan boşluk bırakıyoruz. */
+    padding: 0 12px;
+}
+
+
+/* Input veya select seçildiğinde uygulanacak görünümü belirliyoruz. */
+.search-box input:focus,
+.task-tools select:focus {
+
+    /* Borderı mor yapıyoruz. */
+    border-color:
+        rgba(139, 92, 246, 0.6);
+
+    /* Focus çevresine mor ışık ekliyoruz. */
+    box-shadow:
+        0 0 0 3px
+        rgba(139, 92, 246, 0.08);
+}
+
+
+/* Select menüsündeki seçeneklerin arka planını koyulaştırıyoruz. */
+.task-tools option {
+
+    /* Seçeneklerin arka plan rengini belirliyoruz. */
+    background: #151720;
+}
+
+
+/* ==================================================
+   GÖREV LİSTESİ
+================================================== */
+
+/* Görev listesinin iç boşluğunu belirliyoruz. */
+.task-list {
+
+    /* Üstten az, sağdan ve soldan 16px boşluk bırakıyoruz. */
+    padding: 8px 16px 16px;
+}
+
+
+/* Görev bulunamadığında gösterilecek alanın görünümünü oluşturuyoruz. */
+.empty-state {
+
+    /* Alanın iç boşluğunu belirliyoruz. */
+    padding: 60px 20px;
+
+    /* İçeriği ortalıyoruz. */
+    text-align: center;
+
+    /* Yazıları soluk renkte gösteriyoruz. */
+    color: var(--muted);
+}
+
+
+/* Görev yokken gösterilecek ikon kutusunu oluşturuyoruz. */
+.empty-icon {
+
+    /* İkon kutusunun genişliğini belirliyoruz. */
+    width: 55px;
+
+    /* İkon kutusunun yüksekliğini belirliyoruz. */
+    height: 55px;
+
+    /* İçeriği ortalıyoruz. */
+    display: flex;
+
+    /* İçeriği dikey olarak ortalıyoruz. */
+    align-items: center;
+
+    /* İçeriği yatay olarak ortalıyoruz. */
+    justify-content: center;
+
+    /* Kutuyu yatay olarak ortalıyoruz ve altına boşluk bırakıyoruz. */
+    margin: 0 auto 15px;
+
+    /* Köşeleri yuvarlatıyoruz. */
+    border-radius: 16px;
+
+    /* Mor saydam arka plan oluşturuyoruz. */
+    background:
+        rgba(139, 92, 246, 0.10);
+
+    /* İkon rengini açık mor yapıyoruz. */
+    color: var(--purple-light);
+
+    /* İkon boyutunu belirliyoruz. */
+    font-size: 24px;
+}
+
+
+/* ==================================================
+   GÖREV KARTI
+================================================== */
+
+/* Tek bir görev kartının görünümünü oluşturuyoruz. */
+.task-card {
+
+    /* Sol taraftaki dekoratif çizgiyi karta göre konumlandırıyoruz. */
+    position: relative;
+
+    /* Kart içeriğini yatay olarak diziyoruz. */
+    display: flex;
+
+    /* İçeriği dikey olarak ortalıyoruz. */
+    align-items: center;
+
+    /* İçeriğin iki tarafını dağıtıyoruz. */
+    justify-content: space-between;
+
+    /* İçerikler arasında boşluk bırakıyoruz. */
+    gap: 20px;
+
+    /* Kartın üst ve alt boşluğunu belirliyoruz. */
+    margin: 8px 0;
+
+    /* Kartın iç boşluğunu belirliyoruz. */
+    padding: 17px;
+
+    /* Kart borderını oluşturuyoruz. */
+    border:
+        1px solid var(--border);
+
+    /* Kart köşelerini yuvarlatıyoruz. */
+    border-radius: 14px;
+
+    /* Kartın arka planını hafif saydam yapıyoruz. */
+    background:
+        rgba(255,255,255,0.025);
+
+    /* Hareket, border, arka plan ve opacity değişimlerini yumuşatıyoruz. */
+    transition:
+        transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+        border-color 0.3s,
+        background 0.3s,
+        opacity 0.3s;
+
+    /* Yeni görevlerin ekrana geliş animasyonunu çalıştırıyoruz. */
+    animation:
+        taskEnter 0.45s ease both;
+}
+
+
+/* Görev kartının sol tarafındaki mor çizgiyi oluşturuyoruz. */
+.task-card::before {
+
+    /* Pseudo-element için boş içerik oluşturuyoruz. */
+    content: "";
+
+    /* Çizgiyi karta göre konumlandırıyoruz. */
+    position: absolute;
+
+    /* Çizgiyi kartın sol tarafına yerleştiriyoruz. */
+    left: 0;
+
+    /* Çizgiyi kartın üstünden yüzde 20 aşağı başlatıyoruz. */
+    top: 20%;
+
+    /* Çizginin genişliğini belirliyoruz. */
+    width: 3px;
+
+    /* Çizginin yüksekliğini belirliyoruz. */
+    height: 60%;
+
+    /* Çizginin köşelerini yuvarlatıyoruz. */
+    border-radius: 10px;
+
+    /* Çizginin rengini mor yapıyoruz. */
+    background:
+        var(--purple);
+
+    /* Normal durumda çizgiyi gizliyoruz. */
+    opacity: 0;
+
+    /* Görünürlük değişimini yumuşatıyoruz. */
+    transition: var(--transition);
+}
+
+
+/* Kullanıcı görev kartının üzerine geldiğinde kartı sağa kaydırıyoruz. */
+.task-card:hover {
+
+    /* Kartı 6px sağa taşıyoruz. */
+    transform:
+        translateX(6px);
+
+    /* Hover sırasında borderı morlaştırıyoruz. */
+    border-color:
+        rgba(139, 92, 246, 0.25);
+
+    /* Hover sırasında arka planı biraz aydınlatıyoruz. */
+    background:
+        rgba(139, 92, 246, 0.045);
+
+    /* Kartın gölgesini oluşturuyoruz. */
+    box-shadow:
+        0 10px 35px
+        rgba(0,0,0,0.18);
+}
+
+
+/* Hover sırasında soldaki mor çizgiyi görünür hale getiriyoruz. */
+.task-card:hover::before {
+
+    /* Çizgiyi tamamen görünür yapıyoruz. */
+    opacity: 1;
+}
+
+
+/* Yeni görev kartının giriş animasyonunu tanımlıyoruz. */
+@keyframes taskEnter {
+
+    /* Animasyonun başlangıç durumunu belirliyoruz. */
+    from {
+
+        /* Kartı görünmez yapıyoruz. */
+        opacity: 0;
+
+        /* Kartı aşağıda başlatıyoruz. */
+        transform: translateY(12px);
+    }
+
+
+    /* Animasyonun son durumunu belirliyoruz. */
+    to {
+
+        /* Kartı görünür yapıyoruz. */
+        opacity: 1;
+
+        /* Kartı normal konumuna getiriyoruz. */
+        transform: translateY(0);
+    }
+}
+
+
+/* Görev bilgilerini içeren alanı biçimlendiriyoruz. */
+.task-info {
+
+    /* İçerikleri yatay olarak diziyoruz. */
+    display: flex;
+
+    /* İçerikleri dikey olarak ortalıyoruz. */
+    align-items: center;
+
+    /* Checkbox ve görev yazısı arasında boşluk bırakıyoruz. */
+    gap: 13px;
+
+    /* İçeriğin gereğinden fazla genişlemesini engelliyoruz. */
+    min-width: 0;
+}
+
+
+/* Görev checkbox alanının görünümünü oluşturuyoruz. */
+.task-check {
+
+    /* Checkbox genişliğini belirliyoruz. */
+    width: 22px;
+
+    /* Checkbox yüksekliğini belirliyoruz. */
+    height: 22px;
+
+    /* Checkbox'ın küçülmesini engelliyoruz. */
+    flex-shrink: 0;
+
+    /* İçeriği ortalıyoruz. */
+    display: flex;
+
+    /* İçeriği dikey olarak ortalıyoruz. */
+    align-items: center;
+
+    /* İçeriği yatay olarak ortalıyoruz. */
+    justify-content: center;
+
+    /* Checkbox borderını oluşturuyoruz. */
+    border:
+        1px solid
+        rgba(255,255,255,0.15);
+
+    /* Checkbox köşelerini yuvarlatıyoruz. */
+    border-radius: 7px;
+
+    /* Normal durumda tik işaretini gizliyoruz. */
+    color: transparent;
+
+    /* Checkbox hover hareketini yumuşatıyoruz. */
+    transition: var(--transition);
+}
+
+
+/* Kullanıcı görev kartının üzerine geldiğinde checkbox borderını mor yapıyoruz. */
+.task-card:hover .task-check {
+
+    /* Border rengini mor yapıyoruz. */
+    border-color:
+        var(--purple);
+}
+
+
+/* Görev tamamlandığında checkbox'ı yeşil hale getiriyoruz. */
+.task-card.completed .task-check {
+
+    /* Checkbox arka planını yeşil yapıyoruz. */
+    background:
+        var(--green);
+
+    /* Border rengini de yeşil yapıyoruz. */
+    border-color:
+        var(--green);
+
+    /* Tik işaretini beyaz yapıyoruz. */
+    color: white;
+}
+
+
+/* Görev başlığının görünümünü belirliyoruz. */
+.task-title {
+
+    /* Yazı boyutunu belirliyoruz. */
+    font-size: 14px;
+
+    /* Yazıyı kalınlaştırıyoruz. */
+    font-weight: 600;
+
+    /* Uzun kelimelerin kutudan taşmasını engelliyoruz. */
+    word-break: break-word;
+
+    /* Yazının değişimlerini yumuşatıyoruz. */
+    transition: var(--transition);
+}
+
+
+/* Tamamlanan görev kartını biraz saydamlaştırıyoruz. */
+.task-card.completed {
+
+    /* Tamamlanan görevin opacity değerini düşürüyoruz. */
+    opacity: 0.55;
+}
+
+
+/* Tamamlanan görevin üzerine çizgi çekiyoruz. */
+.task-card.completed .task-title {
+
+    /* Görevin tamamlandığını görsel olarak belirtiyoruz. */
+    text-decoration: line-through;
+}
+
+
+/* Görev butonlarının bulunduğu alanı biçimlendiriyoruz. */
+.task-actions {
+
+    /* Butonları yatay olarak diziyoruz. */
+    display: flex;
+
+    /* Butonlar arasında boşluk bırakıyoruz. */
+    gap: 7px;
+
+    /* Butonların küçülmesini engelliyoruz. */
+    flex-shrink: 0;
+}
+
+
+/* Görev aksiyon butonlarının ortak görünümünü oluşturuyoruz. */
+.task-actions button {
+
+    /* Butona ince border veriyoruz. */
+    border: 1px solid var(--border);
+
+    /* Buton köşelerini yuvarlatıyoruz. */
+    border-radius: 9px;
+
+    /* Butonun iç boşluğunu belirliyoruz. */
+    padding: 8px 11px;
+
+    /* Hafif saydam arka plan veriyoruz. */
+    background:
+        rgba(255,255,255,0.04);
+
+    /* Normal durumda buton yazısını soluk gösteriyoruz. */
+    color: var(--muted);
+
+    /* Hover hareketlerini yumuşatıyoruz. */
+    transition: var(--transition);
+}
+
+
+/* Tamamla butonunun hover görünümünü belirliyoruz. */
+.complete-button:hover {
+
+    /* Yazıyı yeşil yapıyoruz. */
+    color: var(--green);
+
+    /* Borderı yeşil yapıyoruz. */
+    border-color:
+        rgba(34,197,94,0.35);
+
+    /* Yeşil saydam arka plan oluşturuyoruz. */
+    background:
+        rgba(34,197,94,0.08);
+
+    /* Butonu hafifçe yukarı kaldırıyoruz. */
+    transform: translateY(-2px);
+}
+
+
+/* Sil butonunun hover görünümünü belirliyoruz. */
+.delete-button:hover {
+
+    /* Yazıyı kırmızı yapıyoruz. */
+    color: var(--red);
+
+    /* Borderı kırmızı yapıyoruz. */
+    border-color:
+        rgba(239,68,68,0.35);
+
+    /* Kırmızı saydam arka plan oluşturuyoruz. */
+    background:
+        rgba(239,68,68,0.08);
+
+    /* Butonu hafifçe yukarı kaldırıyoruz. */
+    transform: translateY(-2px);
+}
+
+
+/* ==================================================
+   AYARLAR
+================================================== */
+
+/* Ayarlar panelinin maksimum genişliğini belirliyoruz. */
+.settings-panel {
+
+    /* Panelin çok fazla genişlemesini engelliyoruz. */
+    max-width: 800px;
+
+    /* Panel borderını oluşturuyoruz. */
+    border:
+        1px solid var(--border);
+
+    /* Panel köşelerini yuvarlatıyoruz. */
+    border-radius: 20px;
+
+    /* Panelin arka planını oluşturuyoruz. */
+    background:
+        rgba(15,17,24,0.72);
+
+    /* Cam efektini güçlendiriyoruz. */
+    backdrop-filter: blur(20px);
+
+    /* Panel dışına taşan içerikleri gizliyoruz. */
+    overflow: hidden;
+}
+
+
+/* Ayarlar başlık alanının görünümünü belirliyoruz. */
+.settings-header {
+
+    /* Elementleri yatay olarak diziyoruz. */
+    display: flex;
+
+    /* Elementleri dikey olarak ortalıyoruz. */
+    align-items: center;
+
+    /* İkon ile yazılar arasında boşluk bırakıyoruz. */
+    gap: 15px;
+
+    /* İç boşluk bırakıyoruz. */
+    padding: 25px;
+
+    /* Altına border ekliyoruz. */
+    border-bottom:
+        1px solid var(--border);
+}
+
+
+/* Ayarlar ikon kutusunun görünümünü oluşturuyoruz. */
+.settings-icon {
+
+    /* İkon kutusunun genişliğini belirliyoruz. */
+    width: 48px;
+
+    /* İkon kutusunun yüksekliğini belirliyoruz. */
+    height: 48px;
+
+    /* İçeriği ortalıyoruz. */
+    display: flex;
+
+    /* Dikey olarak ortalıyoruz. */
+    align-items: center;
+
+    /* Yatay olarak ortalıyoruz. */
+    justify-content: center;
+
+    /* Köşeleri yuvarlatıyoruz. */
+    border-radius: 14px;
+
+    /* Saydam mor arka plan oluşturuyoruz. */
+    background:
+        rgba(139,92,246,0.12);
+
+    /* İkon rengini açık mor yapıyoruz. */
+    color: var(--purple-light);
+
+    /* İkon boyutunu belirliyoruz. */
+    font-size: 21px;
+
+    /* Döndürme animasyonunu yumuşatıyoruz. */
+    transition: var(--transition);
+}
+
+
+/* Kullanıcı ayarlar ikonunun üzerine geldiğinde ikonu döndürüyoruz. */
+.settings-header:hover .settings-icon {
+
+    /* İkonu 45 derece döndürüyoruz. */
+    transform: rotate(45deg);
+}
+
+
+/* Ayarlar başlığının yazı boyutunu belirliyoruz. */
+.settings-header h3 {
+
+    /* Başlığı 16px yapıyoruz. */
+    font-size: 16px;
+}
+
+
+/* Ayarlar açıklamasının görünümünü belirliyoruz. */
+.settings-header p {
+
+    /* Başlık ile açıklama arasında boşluk bırakıyoruz. */
+    margin-top: 4px;
+
+    /* Açıklamayı soluk gösteriyoruz. */
+    color: var(--muted);
+
+    /* Yazı boyutunu küçültüyoruz. */
+    font-size: 12px;
+}
+
+
+/* Tek bir ayar satırının görünümünü oluşturuyoruz. */
+.setting-item {
+
+    /* İçerikleri yatay olarak diziyoruz. */
+    display: flex;
+
+    /* İçerikleri iki yana dağıtıyoruz. */
+    justify-content: space-between;
+
+    /* İçerikleri dikey olarak ortalıyoruz. */
+    align-items: center;
+
+    /* Satırın iç boşluğunu belirliyoruz. */
+    padding: 20px 25px;
+
+    /* Satırların arasına border koyuyoruz. */
+    border-bottom:
+        1px solid var(--border);
+
+    /* Hover hareketlerini yumuşatıyoruz. */
+    transition: var(--transition);
+}
+
+
+/* Son ayar satırının altında border olmamasını sağlıyoruz. */
+.setting-item:last-child {
+
+    /* Son elementin alt borderını kaldırıyoruz. */
+    border-bottom: none;
+}
+
+
+/* Kullanıcı ayar satırının üzerine geldiğinde arka planı değiştiriyoruz. */
+.setting-item:hover {
+
+    /* Hafif bir arka plan efekti veriyoruz. */
+    background:
+        rgba(255,255,255,0.025);
+
+    /* İçeriği hafifçe sağa kaydırıyoruz. */
+    padding-left: 30px;
+}
+
+
+/* Ayar satırındaki başlık ve açıklamaları ayrı satırlara alıyoruz. */
+.setting-item strong,
+.setting-item span {
+
+    /* Her elementi blok haline getiriyoruz. */
+    display: block;
+}
+
+
+/* Ayar başlığının görünümünü belirliyoruz. */
+.setting-item strong {
+
+    /* Başlık ile açıklama arasında boşluk bırakıyoruz. */
+    margin-bottom: 5px;
+
+    /* Yazı boyutunu belirliyoruz. */
+    font-size: 13px;
+}
+
+
+/* Ayar açıklamasının görünümünü belirliyoruz. */
+.setting-item span {
+
+    /* Açıklamayı soluk renkte gösteriyoruz. */
+    color: var(--muted);
+
+    /* Açıklama yazısını küçültüyoruz. */
+    font-size: 12px;
+}
+
+
+/* Aktif durum etiketinin görünümünü belirliyoruz. */
+.setting-status {
+
+    /* Etikete iç boşluk veriyoruz. */
+    padding: 5px 10px;
+
+    /* Etiketi yuvarlaklaştırıyoruz. */
+    border-radius: 20px;
+
+    /* Saydam yeşil arka plan oluşturuyoruz. */
+    background:
+        rgba(34,197,94,0.1);
+
+    /* Yazıyı yeşil yapıyoruz. */
+    color: var(--green) !important;
+}
+
+
+/* ==================================================
+   MODAL
+================================================== */
+
+/* Modalın ana görünümünü oluşturuyoruz. */
+.modal {
+
+    /* Modalı ekran üzerine sabitliyoruz. */
+    position: fixed;
+
+    /* Modalı ekranın tamamına yayıyoruz. */
+    inset: 0;
+
+    /* İçeriği flex sistemiyle hizalıyoruz. */
+    display: none;
+
+    /* İçeriği dikey olarak ortalıyoruz. */
+    align-items: center;
+
+    /* İçeriği yatay olarak ortalıyoruz. */
+    justify-content: center;
+
+    /* Modalı diğer içeriklerin üzerinde tutuyoruz. */
+    z-index: 100;
+}
+
+
+/* JavaScript modalı açtığında bu sınıf aktif olacak. */
+.modal.show {
+
+    /* Modalı görünür hale getiriyoruz. */
+    display: flex;
+}
+
+
+/* Modalın karanlık arka planını oluşturuyoruz. */
+.modal-backdrop {
+
+    /* Arka planı modal ekranına göre konumlandırıyoruz. */
+    position: absolute;
+
+    /* Ekranın tamamını kaplamasını sağlıyoruz. */
+    inset: 0;
+
+    /* Kullanıcının arkasındaki sayfayı karartıyoruz. */
+    background:
+        rgba(0,0,0,0.72);
+
+    /* Arkadaki sayfayı bulanıklaştırıyoruz. */
+    backdrop-filter: blur(8px);
+
+    /* Arka planın açılma animasyonunu uyguluyoruz. */
+    animation:
+        fadeIn 0.3s ease;
+}
+
+
+/* Modalın asıl içerik kutusunu biçimlendiriyoruz. */
+.modal-content {
+
+    /* Modal içindeki dekoratif elementlerin konumunu kontrol ediyoruz. */
+    position: relative;
+
+    /* Modal genişliğini ekran boyutuna göre sınırlandırıyoruz. */
+    width: min(420px, calc(100% - 30px));
+
+    /* Modal iç boşluğunu belirliyoruz. */
+    padding: 32px;
+
+    /* Modal borderını oluşturuyoruz. */
+    border:
+        1px solid
+        rgba(255,255,255,0.12);
+
+    /* Modal köşelerini yuvarlatıyoruz. */
+    border-radius: 22px;
+
+    /* Modalın koyu arka planını belirliyoruz. */
+    background:
+        #11131b;
+
+    /* Modalın etrafına güçlü gölge ekliyoruz. */
+    box-shadow:
+        0 30px 100px
+        rgba(0,0,0,0.5);
+
+    /* Modal açılış animasyonunu çalıştırıyoruz. */
+    animation:
+        modalEnter 0.45s
+        cubic-bezier(0.22,1,0.36,1);
+}
+
+
+/* Modal arka planının görünme animasyonunu tanımlıyoruz. */
+@keyframes fadeIn {
+
+    /* Başlangıçta tamamen şeffaf oluyor. */
+    from {
+        opacity: 0;
+    }
+
+    /* Sonunda tamamen görünür oluyor. */
+    to {
+        opacity: 1;
+    }
+}
+
+
+/* Modal içeriğinin ekrana geliş animasyonunu tanımlıyoruz. */
+@keyframes modalEnter {
+
+    /* Modal başlangıçta aşağıda ve küçük oluyor. */
+    from {
+        opacity: 0;
+
+        /* Modalı aşağı taşıyıp küçültüyoruz. */
+        transform:
+            translateY(30px)
+            scale(0.94);
+    }
+
+    /* Animasyon sonunda normal konuma geliyor. */
+    to {
+        opacity: 1;
+
+        /* Modalı normal boyutuna ve konumuna getiriyoruz. */
+        transform:
+            translateY(0)
+            scale(1);
+    }
+}
+
+
+/* Modal kapatma butonunun görünümünü oluşturuyoruz. */
+.modal-close {
+
+    /* Butonu modalın sağ üstüne konumlandırıyoruz. */
+    position: absolute;
+
+    /* Üstten 15px uzaklık bırakıyoruz. */
+    top: 15px;
+
+    /* Sağdan 15px uzaklık bırakıyoruz. */
+    right: 15px;
+
+    /* Buton genişliğini belirliyoruz. */
+    width: 34px;
+
+    /* Buton yüksekliğini belirliyoruz. */
+    height: 34px;
+
+    /* Butona border ekliyoruz. */
+    border:
+        1px solid var(--border);
+
+    /* Buton köşelerini yuvarlatıyoruz. */
+    border-radius: 10px;
+
+    /* Butonun arka planını belirliyoruz. */
+    background:
+        rgba(255,255,255,0.04);
+
+    /* Kapatma ikonunu soluk renkte gösteriyoruz. */
+    color: var(--muted);
+
+    /* Kapatma ikonunun boyutunu belirliyoruz. */
+    font-size: 22px;
+
+    /* Hover animasyonunu yumuşatıyoruz. */
+    transition: var(--transition);
+}
+
+
+/* Kapatma butonunun hover görünümünü belirliyoruz. */
+.modal-close:hover {
+
+    /* Hover sırasında ikonu beyaz yapıyoruz. */
+    color: white;
+
+    /* Kırmızımsı arka plan oluşturuyoruz. */
+    background:
+        rgba(239,68,68,0.12);
+
+    /* Border rengini kırmızı yapıyoruz. */
+    border-color:
+        rgba(239,68,68,0.3);
+
+    /* Kapatma ikonunu 90 derece döndürüyoruz. */
+    transform: rotate(90deg);
+}
+
+
+/* Modal içerisindeki artı ikonunun görünümünü oluşturuyoruz. */
+.modal-icon {
+
+    /* İkon kutusunun genişliğini belirliyoruz. */
+    width: 48px;
+
+    /* İkon kutusunun yüksekliğini belirliyoruz. */
+    height: 48px;
+
+    /* İçeriği ortalıyoruz. */
+    display: flex;
+
+    /* İçeriği dikey olarak ortalıyoruz. */
+    align-items: center;
+
+    /* İçeriği yatay olarak ortalıyoruz. */
+    justify-content: center;
+
+    /* İkonun altına boşluk bırakıyoruz. */
+    margin-bottom: 20px;
+
+    /* Köşeleri yuvarlatıyoruz. */
+    border-radius: 14px;
+
+    /* İkona mor-mavi gradient veriyoruz. */
+    background:
+        linear-gradient(
+            135deg,
+            #8b5cf6,
+            #6366f1
+        );
+
+    /* İkonun yazı boyutunu belirliyoruz. */
+    font-size: 24px;
+
+    /* İkona mor gölge veriyoruz. */
+    box-shadow:
+        0 10px 30px
+        rgba(139,92,246,0.25);
+}
+
+
+/* Modal başlığının görünümünü belirliyoruz. */
+.modal-content h2 {
+
+    /* Başlık ile açıklama arasında boşluk bırakıyoruz. */
+    margin-bottom: 6px;
+
+    /* Başlık boyutunu belirliyoruz. */
+    font-size: 25px;
+}
+
+
+/* Modal açıklamasının görünümünü belirliyoruz. */
+.modal-content p {
+
+    /* Input öncesinde boşluk bırakıyoruz. */
+    margin-bottom: 22px;
+
+    /* Açıklamayı soluk renkte gösteriyoruz. */
+    color: var(--muted);
+
+    /* Açıklamanın yazı boyutunu küçültüyoruz. */
+    font-size: 13px;
+}
+
+
+/* Yeni görev inputunun görünümünü oluşturuyoruz. */
+.modal-content input {
+
+    /* Inputu bulunduğu alanın tamamına yayıyoruz. */
+    width: 100%;
+
+    /* Input yüksekliğini belirliyoruz. */
+    height: 50px;
+
+    /* Input ile buton arasında boşluk bırakıyoruz. */
+    margin-bottom: 12px;
+
+    /* Input iç boşluğunu belirliyoruz. */
+    padding: 0 15px;
+
+    /* Input borderını oluşturuyoruz. */
+    border:
+        1px solid var(--border);
+
+    /* Input köşelerini yuvarlatıyoruz. */
+    border-radius: 11px;
+
+    /* Focus sırasında varsayılan outline'ı kaldırıyoruz. */
+    outline: none;
+
+    /* Input arka planını saydam yapıyoruz. */
+    background:
+        rgba(255,255,255,0.035);
+
+    /* Input yazısını beyaz yapıyoruz. */
+    color: white;
+
+    /* Focus animasyonunu yumuşatıyoruz. */
+    transition: var(--transition);
+}
+
+
+/* Input seçildiğinde uygulanacak görünümü belirliyoruz. */
+.modal-content input:focus {
+
+    /* Input borderını mor yapıyoruz. */
+    border-color:
+        var(--purple);
+
+    /* Input çevresine mor ışık ekliyoruz. */
+    box-shadow:
+        0 0 0 4px
+        rgba(139,92,246,0.09);
+}
+
+
+/* Modal içerisindeki kaydet butonunu tam genişlik yapıyoruz. */
+.modal-save {
+
+    /* Butonu modal genişliğinin tamamına yayıyoruz. */
+    width: 100%;
+}
+
+
+/* ==================================================
+   TOAST BİLDİRİMİ
+================================================== */
+
+/* Sağ altta çıkan bildirim kutusunun görünümünü oluşturuyoruz. */
+.toast {
+
+    /* Bildirimi ekrana sabitliyoruz. */
+    position: fixed;
+
+    /* Sağdan 25px uzaklık bırakıyoruz. */
+    right: 25px;
+
+    /* Alttan 25px uzaklık bırakıyoruz. */
+    bottom: 25px;
+
+    /* İçerikleri yatay olarak diziyoruz. */
+    display: flex;
+
+    /* İçerikleri dikey olarak ortalıyoruz. */
+    align-items: center;
+
+    /* İkon ile yazı arasında boşluk bırakıyoruz. */
+    gap: 12px;
+
+    /* Bildirim kutusunun minimum genişliğini belirliyoruz. */
+    min-width: 280px;
+
+    /* Bildirim iç boşluğunu belirliyoruz. */
+    padding: 14px 17px;
+
+    /* Bildirim borderını oluşturuyoruz. */
+    border:
+        1px solid
+        rgba(255,255,255,0.1);
+
+    /* Bildirim köşelerini yuvarlatıyoruz. */
+    border-radius: 14px;
+
+    /* Bildirim arka planını saydam yapıyoruz. */
+    background:
+        rgba(20,22,30,0.9);
+
+    /* Bildirimin arkasını bulanıklaştırıyoruz. */
+    backdrop-filter: blur(20px);
+
+    /* Bildirime gölge veriyoruz. */
+    box-shadow:
+        0 20px 50px
+        rgba(0,0,0,0.35);
+
+    /* Bildirimi başlangıçta sağ tarafta ve aşağıda tutuyoruz. */
+    transform:
+        translateY(30px)
+        translateX(120%);
+
+    /* Bildirimi başlangıçta görünmez yapıyoruz. */
+    opacity: 0;
+
+    /* Bildirim giriş ve çıkış animasyonunu yumuşatıyoruz. */
+    transition:
+        0.45s cubic-bezier(0.22,1,0.36,1);
+
+    /* Bildirimi diğer elementlerin üzerinde tutuyoruz. */
+    z-index: 200;
+}
+
+
+/* JavaScript toast'a show sınıfı verdiğinde bildirimi gösteriyoruz. */
+.toast.show {
+
+    /* Bildirimi normal konumuna getiriyoruz. */
+    transform:
+        translateY(0)
+        translateX(0);
+
+    /* Bildirimi tamamen görünür yapıyoruz. */
+    opacity: 1;
+}
+
+
+/* Toast içerisindeki ikon kutusunun görünümünü belirliyoruz. */
+.toast-icon {
+
+    /* İkon kutusunun genişliğini belirliyoruz. */
+    width: 32px;
+
+    /* İkon kutusunun yüksekliğini belirliyoruz. */
+    height: 32px;
+
+    /* İkonu ortalıyoruz. */
+    display: flex;
+
+    /* İkonu dikey olarak ortalıyoruz. */
+    align-items: center;
+
+    /* İkonu yatay olarak ortalıyoruz. */
+    justify-content: center;
+
+    /* Köşeleri yuvarlatıyoruz. */
+    border-radius: 9px;
+
+    /* Saydam yeşil arka plan oluşturuyoruz. */
+    background:
+        rgba(34,197,94,0.12);
+
+    /* İkon rengini yeşil yapıyoruz. */
+    color: var(--green);
+}
+
+
+/* Toast başlığını ayrı satıra alıyoruz. */
+.toast strong {
+
+    /* Başlığı blok element yapıyoruz. */
+    display: block;
+
+    /* Başlık ile açıklama arasına boşluk bırakıyoruz. */
+    margin-bottom: 3px;
+
+    /* Yazı boyutunu belirliyoruz. */
+    font-size: 12px;
+}
+
+
+/* Toast açıklamasının görünümünü belirliyoruz. */
+.toast span:last-child {
+
+    /* Açıklamayı soluk renkte gösteriyoruz. */
+    color: var(--muted);
+
+    /* Açıklama yazısını küçültüyoruz. */
+    font-size: 11px;
+}
+
+
+/* ==================================================
+   RESPONSIVE TASARIM
+================================================== */
+
+/* Ekran genişliği 1000px veya daha küçük olduğunda uygulanır. */
+@media (max-width: 1000px) {
+
+    /* İstatistik kartlarını tek sütuna geçiriyoruz. */
+    .stats {
+        /* Kartları alt alta sıralıyoruz. */
+        grid-template-columns: 1fr;
+    }
+
+
+    /* Tablet boyutunda sidebar genişliğini küçültüyoruz. */
+    .sidebar {
+        /* Sidebar genişliğini 210px yapıyoruz. */
+        width: 210px;
+    }
+
+
+    /* Tablet boyutunda ana alanı sidebar'a göre ayarlıyoruz. */
+    .main {
+        /* Sidebar çıkarıldıktan sonraki genişliği hesaplıyoruz. */
+        width: calc(100% - 210px);
+
+        /* Sidebar kadar soldan boşluk bırakıyoruz. */
+        margin-left: 210px;
+
+        /* Ana alanın iç boşluğunu azaltıyoruz. */
+        padding: 30px;
+    }
+}
+
+
+/* Ekran genişliği 750px veya daha küçük olduğunda uygulanır. */
+@media (max-width: 750px) {
+
+    /* Mobilde sidebar'ın sabit olmasını kaldırıyoruz. */
+    .sidebar {
+
+        /* Sidebar'ın normal akışta bulunmasını sağlıyoruz. */
+        position: relative;
+
+        /* Sidebar'ın genişliğini ekranın tamamı yapıyoruz. */
+        width: 100%;
+
+        /* Minimum yüksekliği kaldırarak içeriğe göre boyutlanmasını sağlıyoruz. */
+        min-height: auto;
+
+        /* Sağdaki borderı kaldırıyoruz. */
+        border-right: none;
+
+        /* Sidebar'ın altına border ekliyoruz. */
+        border-bottom:
+            1px solid var(--border);
+    }
+
+
+    /* Mobilde ana uygulamayı blok düzene geçiriyoruz. */
+    .app {
+        /* Flex düzenini kaldırıp block düzenine geçiyoruz. */
+        display: block;
+    }
+
+
+    /* Mobilde ana içeriğin genişliğini ayarlıyoruz. */
+    .main {
+
+        /* Ana alanı ekranın tamamına yayıyoruz. */
+        width: 100%;
+
+        /* Sidebar için bırakılan soldaki boşluğu kaldırıyoruz. */
+        margin-left: 0;
+
+        /* Mobilde daha küçük iç boşluk kullanıyoruz. */
+        padding: 25px 18px;
+    }
+
+
+    /* Mobilde sidebar menüsünü yatay hale getiriyoruz. */
+    .sidebar-nav {
+
+        /* Menüleri yan yana diziyoruz. */
+        flex-direction: row;
+    }
+
+
+    /* Mobilde nav butonlarını ortalıyoruz. */
+    .nav-item {
+
+        /* İçerikleri ortalıyoruz. */
+        justify-content: center;
+    }
+
+
+    /* Mobilde menü yazılarını gizliyoruz. */
+    .nav-item span:last-child {
+
+        /* Menü metinlerini ekrandan kaldırıyoruz. */
+        display: none;
+    }
+
+
+    /* Mobilde sidebar alt bilgi alanını gizliyoruz. */
+    .sidebar-bottom {
+
+        /* Alt bilgi kutusunu ekrandan kaldırıyoruz. */
+        display: none;
+    }
+
+
+    /* Mobilde logo alanının alt boşluğunu azaltıyoruz. */
+    .logo-area {
+
+        /* Daha küçük alt padding kullanıyoruz. */
+        padding-bottom: 20px;
+    }
+
+
+    /* Mobilde üst barı dikey düzene geçiriyoruz. */
+    .topbar,
+    .panel-header {
+
+        /* Elementleri alt alta sıralıyoruz. */
+        flex-direction: column;
+
+        /* Elementleri sola hizalıyoruz. */
+        align-items: flex-start;
+    }
+
+
+    /* Mobilde görev araçlarını tam genişlikte gösteriyoruz. */
+    .task-tools {
+
+        /* Araç alanının genişliğini tamamlıyoruz. */
+        width: 100%;
+
+        /* Araçları dikey sıralıyoruz. */
+        flex-direction: column;
+    }
+
+
+    /* Mobilde arama inputunu tam genişlikte gösteriyoruz. */
+    .search-box input,
+    .task-tools select {
+
+        /* Elementleri kapsayıcının tamamına yayıyoruz. */
+        width: 100%;
+    }
+
+
+    /* Mobilde ana butonu tam genişlikte gösteriyoruz. */
+    .primary-button {
+
+        /* Butonu bulunduğu alanın tamamına yayıyoruz. */
+        width: 100%;
+    }
+
+
+    /* Mobilde ana başlığın boyutunu küçültüyoruz. */
+    .welcome h2 {
+
+        /* Mobil için daha küçük başlık kullanıyoruz. */
+        font-size: 28px;
+    }
+
+
+    /* Mobilde görev kartını dikey düzene geçiriyoruz. */
+    .task-card {
+
+        /* Elementleri üst üste sıralıyoruz. */
+        align-items: flex-start;
+
+        /* Flex yönünü dikey yapıyoruz. */
+        flex-direction: column;
+    }
+
+
+    /* Mobilde görev butonlarını tam genişlikte gösteriyoruz. */
+    .task-actions {
+
+        /* Aksiyon alanını tam genişlikte yapıyoruz. */
+        width: 100%;
+    }
+
+
+    /* Mobilde görev butonlarını eşit genişlikte yapıyoruz. */
+    .task-actions button {
+
+        /* Her butonun kalan alanı eşit paylaşmasını sağlıyoruz. */
+        flex: 1;
+    }
+}
+
+
+/* ==================================================
+   HAREKET AZALTMA DESTEĞİ
+================================================== */
+
+/* Kullanıcı işletim sisteminde hareket azaltmayı seçtiyse bu bölüm uygulanır. */
+@media (prefers-reduced-motion: reduce) {
+
+    /* Animasyonları ve transitionları mümkün olduğunca azaltıyoruz. */
+    *,
+    *::before,
+    *::after {
+
+        /* Animasyon süresini neredeyse sıfırlıyoruz. */
+        animation-duration: 0.01ms !important;
+
+        /* Animasyonun yalnızca bir kez çalışmasını sağlıyoruz. */
+        animation-iteration-count: 1 !important;
+
+        /* Transition süresini neredeyse sıfırlıyoruz. */
+        transition-duration: 0.01ms !important;
+    }
+}
